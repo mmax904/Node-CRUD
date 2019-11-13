@@ -110,9 +110,9 @@ app.use(function (req, res, next) {
     }
 });
 
-import indexRouter from './routes/index';
+import indexRouter from './routes/web/index';
 import contactRouter from './routes/contact';
-import reflectionRouter from './routes/reflection';
+import reflectionRouter from './routes/api/reflection';
 
 app.use('/', indexRouter);
 app.use('/contact', contactRouter);

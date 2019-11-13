@@ -19,7 +19,7 @@
                         <td><%= contact.email %></td>
                         <td><%= contact.message %></td>
                         <td>
-                            <a href="/contact/edit/<%= contact.id %>" target="_blank" rel="noopener" class="btn btn-sm btn-info">Edit</a>
+                            <a href="/contact/edit/<%= contact.id %>"rel="noopener noreferrer" class="btn btn-sm btn-info">Edit</a>
                             <form method="post" action="/contact/<%= contact.id %>?_csrf=<%= csrfToken %>" style="display:inline">
                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <button class="btn btn-sm btn-danger" type="submit">Delete</button>

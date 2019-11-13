@@ -1,9 +1,8 @@
 import express from 'express';
 var router = express.Router();
-import Contact from '../src/controllers/Contact';
+import Contact from '../../app/controllers/Contact';
 import multer from 'multer';
 import { check } from 'express-validator/check';
-import { matchedData } from 'express-validator/filter';
 
 /**for storing in memory as buffer
  *const upload = multer({ storage: multer.memoryStorage() })
@@ -11,13 +10,13 @@ import { matchedData } from 'express-validator/filter';
 /**
  * Simple upload method without file extension
  */
-//const upload = multer({ dest: 'uploads/' });
+//const upload = multer({ dest: 'storage/uploads/' });
 
-multer({ dest: 'uploads/contacts' });
+multer({ dest: 'storage/uploads/contacts' });
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, 'uploads/contacts')
+		cb(null, 'storage/uploads/contacts')
 	},
 	filename: function (req, file, cb) {
 		//console.log('file:'+JSON.stringify(file));
@@ -60,7 +59,7 @@ Contact.update);
 
 router.post('/:id', Contact.delete);
 
-var uploadProfileImgs = multer({dest : 'uploads/profile/'}).single('avatar');
+var uploadProfileImgs = multer({dest : 'storage/uploads/profile/'}).single('avatar');
 
 router.post('/profile', function (req, res) {
   uploadProfileImgs(req, res, function (err) {

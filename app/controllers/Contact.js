@@ -85,8 +85,8 @@ const Contact = {
      */
     update(req, res) {
         const errors = validationResult(req)
-        
         if (!errors.isEmpty()) {
+            req.body.id = req.params.id;
             return res.render('layouts/index', {
                 section:'../contacts/edit',
                 data: req.body,
@@ -105,7 +105,7 @@ const Contact = {
         //console.log('Sanitized: ', data)
         var updatedContact = ContactModel.update(req.params.id,data,true);
         req.flash('success', 'Thanks for the message! I‘ll be in touch :)')
-        res.redirect('/contact');
+        //res.redirect('/contact');
     },
     /**
      * 
