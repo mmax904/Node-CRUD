@@ -1,9 +1,19 @@
-var express = require('express');
+import express from 'express';
+import createError from 'http-errors';
+
+// Web routes
+import webRouter from './web';
+// API routes
+import apiRouter from './api';
+
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  	res.render('layouts/index', { title: 'Express' });
+router.use('/api/v1', apiRouter);
+router.use('/', webRouter);
+
+// catch 404 and forward to error handler
+router.use(function(req, res, next) {
+    next(createError(404));
 });
 
 module.exports = router;
