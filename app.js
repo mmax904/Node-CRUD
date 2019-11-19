@@ -1,9 +1,9 @@
-process.env.NODE_ENV = 'dev';
 var NodeEnviRonment = '.env.'+process.env.NODE_ENV;
 
 import dotenv from 'dotenv';
 dotenv.config({path: NodeEnviRonment});
 
+import "babel-polyfill";
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
@@ -14,17 +14,16 @@ import session from 'express-session';
 import flash from 'express-flash';
 import helmet from 'helmet';
 
-import "babel-polyfill";
+// Global/Config variables
+import config from './config/config.js';
+
+import routes from './routes';
 
 // environment variables
 process.env.NODE_ENV = 'development';
 
 // uncomment below line to test this code against staging environment
 // process.env.NODE_ENV = 'staging';
-
-// config variables
-import config from './config/config.js';
-// import mysqlcon from './config/MySQL';
 
 // middlewares
 import ErrorHandler from './app/middlewares/ErrorHandler'
@@ -44,14 +43,12 @@ app.set('views', path.join(__dirname, 'resources/views'));
  */
 app.set('view engine', 'ejs');
 
-
-
 const middlewares = [
 	validator(),
 	session({
-		secret: 'super-secret-key',
-		key: 'super-secret-cookie',
-		resave: false,
+		secret: 'JSESSION',
+		key: 'MYSECRETISVERYSECRET',
+		resave: true,
 		saveUninitialized: false,
 		cookie: { maxAge: 60000 }
 	}),
@@ -99,8 +96,6 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(CrossOrigin);
 
 // Routing
-import routes from './routes';
-
 app.use('/', routes);
 
 // error handler
