@@ -2,14 +2,14 @@ import dbcon from '../../config/MySQL';
 import moment from 'moment';
 import uuid from 'uuid';
 
-class Contact {
+class User {
     /**
      * class constructor
      * @param {object} data
      */
     constructor() {
-        this.table = 'contacts';
-        this.contacts = [];
+        this.table = 'users';
+        this.users = [];
     }
     /**
      * 
@@ -17,25 +17,26 @@ class Contact {
      */
     store(data) {
         var dbval = [];
-        const newContact = {
+        const newUser = {
             id: uuid.v4(),
-            email: data.email || '',
-            message: data.message || '',
+            username: data.username || '',
+            password: data.password || '',
+            full_name: data.full_name || '',
             photo: data.files.filename ? this.table+'/'+data.files.filename : '',
             created_at: moment().format('YYYY-MM-DD HH:mm:ss'),
             updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
         };
 
-        var dbData = Object.assign({},newContact);
+        var dbData = Object.assign({},newUser);
         dbData = Object.values(dbData);
         dbval.push(dbData);
 
         /** getting table fields from model */
-        var db_field = Object.keys(newContact).join(',');
+        var db_field = Object.keys(newUser).join(',');
 
         var sql = `INSERT INTO ${this.table} (${db_field}) values ?`;
 
-        dbcon.query(sql, [dbval], function(err,result) {
+       dbcon.query(sql, [dbval], function(err,result) {
             if (err) {
                 // console.log(query.sql,'QUERY')
                 // console.log(err,'ERROR');
@@ -45,8 +46,8 @@ class Contact {
             //process.exit(0);
         });
 
-        this.contacts.push(newContact);
-        return newContact
+        this.contacts.push(newUser);
+        return newUser
     }
     /**
      * 
@@ -54,16 +55,15 @@ class Contact {
      * @param {object} data 
      */
     update(id, data, cb) {
-        const updatedContact = {
-            email: data.email || '',
-            message: data.message || '',
+        const updatedUser = {
+            username: data.username || '',
             photo: data.files.filename ? this.table+'/'+data.files.filename : '',
             updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
         };
 
         var sql = `UPDATE ${this.table} SET ? WHERE id=?`;
 
-        var query = dbcon.query(sql, [updatedContact,id], function(err,result) {
+        var query = dbcon.query(sql, [updatedUser,id], function(err,result) {
             if (err) {
                 console.log(query.sql,'QUERY')
                 // console.log(err,'ERROR');
@@ -72,7 +72,7 @@ class Contact {
             }
             //process.exit(0);
         });
-        return updatedContact
+        return updatedUser
     }
     /**
      * 
@@ -117,7 +117,7 @@ class Contact {
             } else {
                 var ii = list.length;
                 _self.contacts = [];
-                //console.log(`Contact Data: ${JSON.stringify(list, undefined, gConfig.json_indentation)}`);
+                //console.log(`User Data: ${JSON.stringify(list, undefined, gConfig.json_indentation)}`);
                 list.forEach((v,i) => {
                     ii--;
                     v = Object.assign({}, v);
@@ -138,4 +138,4 @@ class Contact {
         });
     }*/
 }
-export default new Contact();
+export default new User();
