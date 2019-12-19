@@ -29,8 +29,9 @@ var upload = multer({ storage: storage });
 /* GET contacts list. */
 router.get('/', Contact.view);
 
+var cpUpload = upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'excel', maxCount: 1 }]);
 router.get('/add', Contact.create);
-router.post('/add', upload.single('photo'), [
+router.post('/add', cpUpload,[
 	check('message')
 		.isLength({ min: 1 })
 		.withMessage('Message is required')

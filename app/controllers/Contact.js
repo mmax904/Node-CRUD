@@ -1,6 +1,11 @@
 import ContactModel from '../models/Contact';
 import { validationResult } from 'express-validator/check';
 import { matchedData } from 'express-validator/filter';
+import readXlsxFile from 'read-excel-file';
+import fs from 'fs';
+import JSZip from 'jszip';
+import formidable from 'formidable';
+import util from 'util';
 
 const Contact = {
     /**
@@ -38,25 +43,52 @@ const Contact = {
      * @param {object} res
      * @returns {object} contact object 
      */
-    store(req, res) {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.render('layouts/index', {
-                section:'../contacts/add',
-                data: req.body,
-                errors: errors.mapped(),
-                csrfToken: req.csrfToken()
-            })
-        }
+    async store(req, res) {
+        // readXlsxFile(fs.createReadStream(filepath)).then((rows) => {
+        //   console.log(rows)
+        // })
+        var form = new formidable.IncomingForm();
+ 
+        form.parse(req, function(err, fields, files) {
+            // console.log(util.inspect({fields: fields, files: files}))
 
-        const data = matchedData(req)
-        data.files = {};
-        if (req.file) {
-            data.files = req.file;
-        }
-        var newContact = ContactModel.store(data);
-        req.flash('success', 'Thanks for the message! I‘ll be in touch :)')
-        res.redirect('/contact');
+            
+            fs.readFile(files.excel.path, function(err, data) {
+                if (err) throw err;
+                readXlsxFile(data)
+                .then((rows) => {
+                    console.log(rows)
+                })
+                .catch((e) => {
+                    console.log(e)
+                });
+                JSZip.loadAsync(data).then(function (zip) {
+                    console.log(zip);
+                }).catch(function(e){
+                    console.log(e)
+                });
+            });
+            
+        });
+
+        // const errors = validationResult(req)
+        // if (!errors.isEmpty()) {
+        //     return res.render('layouts/index', {
+        //         section:'../contacts/add',
+        //         data: req.body,
+        //         errors: errors.mapped(),
+        //         csrfToken: req.csrfToken()
+        //     })
+        // }
+
+        // const data = matchedData(req)
+        // data.files = {};
+        // if (req.file) {
+        //     data.files = req.file;
+        // }
+        // var newContact = ContactModel.store(data);
+        // req.flash('success', 'Thanks for the message! I‘ll be in touch :)')
+        // res.redirect('/contact');
     },
     /**
      * 
