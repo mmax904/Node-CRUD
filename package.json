@@ -39,7 +39,7 @@
 		"lodash": ">=4.17.11",
 		"memory": "0.0.3",
 		"mixin-deep": ">=2.0.1",
-		"moment": "^2.24.0",
+		"moment": "^2.29.2",
 		"mongodb": "^3.3.4",
 		"morgan": "^1.9.1",
 		"multer": "^1.4.1",
