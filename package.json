@@ -35,7 +35,7 @@
 		"hbs": "^4.0.6",
 		"helmet": "^3.21.2",
 		"http-errors": "~1.6.2",
-		"jsonwebtoken": "^8.5.1",
+		"jsonwebtoken": "^9.0.0",
 		"lodash": ">=4.17.11",
 		"memory": "0.0.3",
 		"mixin-deep": ">=2.0.1",
